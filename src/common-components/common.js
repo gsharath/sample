@@ -1,30 +1,7 @@
+import React from 'react';
 import styled from 'styled-components';
-
-export const InputFormControl = styled.input`
-  border-radius: 4px !important;
-  padding: 4px;
-  margin: 4px;
-`;
-
-export const BaseButton = styled.button`
-  border-radius: 8px;
-  padding: 8px;
-  margin: 8px;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  text-transform: uppercase;
-`;
-
-export const StyledPrimaryButton = styled(BaseButton)`
-  background-color: green;
-  color: white;
-`;
-
-export const StyledSecondaryButton = styled(BaseButton)`
-  background-color: white;
-  color: black;
-`;
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {timeSince} from './utility-functions';
 
 export const FlexItem = styled.div`
     display: flex;
@@ -36,17 +13,67 @@ flex-direction: column;
 export const RowFlexItem = styled(FlexItem)`
 flex-direction: row;
 `
-
-export const StyledForm=styled.form`
+export const Wrapper = styled(ColumnFlexItem)`
+padding:8px;
+`
+export const Card = styled(FlexItem)`
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  background-color: white;
+  margin: 4px;
+  width: 200px;
+  > .data{
+    margin: 4px;
+  }
+  > .card-footer {
     display: flex;
     flex-direction: column;
-    align-items:center;
-    width:100%;
-    justify-content:center;
-`;
-
-
-export const StyledError=styled(FlexItem)`
-    font-size: 12px;
-    color: red;
+    padding: 16px;
+    margin-top: auto;
+  }
 `
+export const CenteredCard = styled(Card)`
+align-items: center;
+justify-content: center;
+`
+export const StyledColumnCard = styled(Card)`
+flex-direction: column`
+
+const DataDisplayer = styled(FlexItem)`
+align-items: center;
+    gap: 8px;
+    > .text{
+      color: #a8a2a2;
+      font-weight: 600;
+    }
+`
+
+export function TimeAgo({ time }) {
+  const t = timeSince(time);
+  return (
+    <DataDisplayer>
+      <FontAwesomeIcon icon="fa-solid fa-clock" size={'xs'} />
+      <span className={'text'}>{t}</span>
+    </DataDisplayer>
+  )
+};
+
+function getStatus(status){
+  const allStatus = {
+    'optimised': {text: 'Results Optimised', color: 'blue'},
+    'incomplete': {text: 'Unoptmised', color: 'orange'},
+    'error':{text: 'Failed', color: 'red'}, 
+    'notdefined':{text: 'Not Defined', color: 'yellow'}
+  }
+  return allStatus[status] ?? status['notdefined'];
+}
+
+export function StatusDisplayer({ status }) {
+  const mappedStatus = getStatus(status);
+  return (
+    <DataDisplayer>
+      <FontAwesomeIcon icon="fa-solid fa-circle" size={'xs'} color={mappedStatus.color}/>
+      <span className={'text'}>{mappedStatus.text}</span>
+    </DataDisplayer>
+  )
+}
