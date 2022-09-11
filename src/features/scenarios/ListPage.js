@@ -101,7 +101,7 @@ function AddScenario({onAddScenario}) {
                     value={scenarioName}
                 />
                 <StyledActionsWrapper>
-                <button onClick={onAddClick}>
+                <button onClick={onAddClick} disabled={!scenarioName}>
                     Add
                 </button>
                 <button onClick={onCancelClick}>
